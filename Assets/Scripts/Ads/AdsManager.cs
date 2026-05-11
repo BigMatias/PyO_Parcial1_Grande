@@ -1,3 +1,4 @@
+#if UNITY_IOS || UNITY_ANDROID
 using UnityEngine;
 using UnityEngine.Advertisements;
 
@@ -39,3 +40,4 @@ public class AdsManager : MonoBehaviour, IUnityAdsInitializationListener
         Debug.Log($"Unity Ads Initialization Failed: {error.ToString()} - {message}");
     }
 }
+#endif

@@ -7,6 +7,7 @@ public class Timer : MonoBehaviour
     [SerializeField] private GameButton button;
     
     public float timer { get; private set; }
+    private int bonusTime;
     private bool gameStarted;
     
     private Coroutine gameReset;
@@ -22,6 +23,7 @@ public class Timer : MonoBehaviour
     void Start()
     {
         gameStarted = false;
+        bonusTime = 0;
         timer = 10;
     }
     
@@ -30,14 +32,16 @@ public class Timer : MonoBehaviour
         if (gameStarted)
         {
             timer -= Time.deltaTime;
+            
+            if (timer <= 0)
+            {
+                gameStarted = false;
+                gameReset = StartCoroutine(GameReset());
+                OnTimerEnded?.Invoke();
+            }
         }
 
-        if (timer <= 0)
-        {
-            gameStarted = false;
-            gameReset = StartCoroutine(GameReset());
-            OnTimerEnded?.Invoke();
-        }
+
     }
 
     private void OnDestroy()
@@ -53,13 +57,14 @@ public class Timer : MonoBehaviour
     private IEnumerator GameReset()
     {
         yield return new WaitForSeconds(3);
-        timer = 10;
+        timer = 10 + bonusTime;
+        bonusTime = 0;
         OnGameReset?.Invoke();
     }
 
     public void AddRewardTime()
     {
-        timer += 2;
+        bonusTime += 2;
     }
     
 }

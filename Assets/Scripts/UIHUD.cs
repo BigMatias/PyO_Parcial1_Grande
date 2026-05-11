@@ -36,7 +36,15 @@ public class UIHUD : MonoBehaviour
         creditsBackBtn.onClick.AddListener(OnCreditsBackBtnClicked);
         adsBtn.onClick.AddListener(OnAdsBtnClicked);
     }
-    
+
+    private void Start()
+    {
+#if UNITY_IOS || UNITY_ANDROID
+    adsBtn.gameObject.SetActive(true);
+#else
+    adsBtn.gameObject.SetActive(false);
+#endif
+    }
 
     private void Update()
     {
